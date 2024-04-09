@@ -5,14 +5,14 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.JobsActivity">
+    tools:context=".activities.CompanyActivity">
 
     <TextView
         android:id="@+id/tvComp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="Jobs"
+        android:text="Company"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,13 +36,13 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="30dp"
-        android:backgroundTint="#00D9FF"
         android:clickable="true"
         android:contentDescription="Add Company"
         android:src="@drawable/ic_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:shapeAppearance="@style/Widget.Material3.CircularProgressIndicator"
-        app:tint="@color/black" />
+        app:tint="@color/black"
+       android:backgroundTint="#00D9FF"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

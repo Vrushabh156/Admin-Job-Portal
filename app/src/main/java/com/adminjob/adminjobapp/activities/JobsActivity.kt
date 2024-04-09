@@ -1,14 +1,17 @@
 package com.adminjob.adminjobapp.activities
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.adminjob.adminjobapp.R
+import com.adminjob.adminjobapp.databinding.ActivityCompanyBinding
 import com.adminjob.adminjobapp.databinding.ActivityJobsBinding
-import com.adminjob.adminjobapp.databinding.ActivityLoginBinding
 
 class JobsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityJobsBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityJobsBinding.inflate(layoutInflater)
