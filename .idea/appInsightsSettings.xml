@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.adminjob.adminjobapp" />
+                  <option name="mobileSdkAppId" value="1:969453464194:android:fcf9a3222ec43acbede29b" />
+                  <option name="projectId" value="job-portal-app-bc7e6" />
+                  <option name="projectNumber" value="969453464194" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

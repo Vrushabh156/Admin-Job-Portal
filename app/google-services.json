@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "969453464194",
+    "firebase_url": "https://job-portal-app-bc7e6-default-rtdb.firebaseio.com",
+    "project_id": "job-portal-app-bc7e6",
+    "storage_bucket": "job-portal-app-bc7e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969453464194:android:fcf9a3222ec43acbede29b",
+        "android_client_info": {
+          "package_name": "com.adminjob.adminjobapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAj5gsYgsA7AY7ChjQBqqV6fwrCOJGJIJw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969453464194:android:9ec4e544e8671c70ede29b",
+        "android_client_info": {
+          "package_name": "com.example.disappointing"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAj5gsYgsA7AY7ChjQBqqV6fwrCOJGJIJw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
