@@ -15,16 +15,16 @@
         android:theme="@style/Theme.AdminJobApp"
         tools:targetApi="31">
         <activity
-            android:name=".activities.PostJobActivity"
+            android:name=".ui.activities.PostJobActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.CompanyDetailActivity"
+            android:name=".ui.activities.CompanyDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.CompanyActivity"
+            android:name=".ui.activities.CompanyActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.SplashActivity"
+            android:name=".ui.activities.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,16 +33,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".ui.activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.RegisterActivity"
+            android:name=".ui.activities.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.JobsActivity"
+            android:name=".ui.activities.JobsActivity"
             android:exported="false" />
     </application>
 

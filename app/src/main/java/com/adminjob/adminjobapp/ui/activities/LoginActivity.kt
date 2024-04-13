@@ -1,4 +1,4 @@
-package com.adminjob.adminjobapp.activities
+package com.adminjob.adminjobapp.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -34,6 +34,21 @@ class LoginActivity : AppCompatActivity() {
                     .show()
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            navigateToMainActivity()
+        }
+    }
+
+    private fun navigateToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish() // Call finish() to remove this activity from the stack
     }
 
     private fun signInUser(email: String, password: String) {

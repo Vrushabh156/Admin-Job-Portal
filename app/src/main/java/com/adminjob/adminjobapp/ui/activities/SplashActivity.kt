@@ -1,4 +1,4 @@
-package com.adminjob.adminjobapp.activities
+package com.adminjob.adminjobapp.ui.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent

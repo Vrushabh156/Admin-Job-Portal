@@ -1,5 +1,7 @@
-package com.adminjob.adminjobapp.activities
+package com.adminjob.adminjobapp.ui.activities
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -37,18 +39,36 @@ class CompanyDetailActivity : AppCompatActivity() {
 
         // Create a HashMap to store company details
         val company = hashMapOf(
-            "company name" to companyName,
-            "company description" to companyDescription
+            "name" to companyName,
+            "description" to companyDescription
         )
 
         // Add a new document with a generated ID to a collection named "companies"
         firestore.collection("companies")
             .add(company)
             .addOnSuccessListener { documentReference ->
-                Toast.makeText(this, "Company registered successfully", Toast.LENGTH_SHORT).show()
+                showSuccessDialog()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error adding document: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error adding details: ${e.message}", Toast.LENGTH_SHORT)
+                    .show()
             }
     }
+
+    private fun showSuccessDialog() {
+        val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder.setMessage("Company registered successfully")
+            .setCancelable(false)
+            .setPositiveButton("OK") { dialog, id ->
+                // Redirect to CompanyActivity
+                val intent = Intent(this@CompanyDetailActivity, CompanyActivity::class.java)
+                startActivity(intent)
+                finish() // Finish current activity
+            }
+        val alert = dialogBuilder.create()
+        alert.setTitle("Registration Success")
+        alert.show()
+    }
+
 }
+
