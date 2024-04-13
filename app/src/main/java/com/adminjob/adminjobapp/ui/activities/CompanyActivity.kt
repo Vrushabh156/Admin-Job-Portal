@@ -39,7 +39,10 @@ class CompanyActivity : AppCompatActivity() {
                 val company = document.toObject(Company::class.java)
                 companyList.add(company)
             }
-            binding.rvJobs.adapter = CompanyAdapter(companyList)
+            binding.rvJobs.adapter = CompanyAdapter(companyList) { company ->
+                val intent = Intent(this@CompanyActivity, JobsActivity::class.java)
+                startActivity(intent)
+            }
         }.addOnFailureListener { exception ->
             Toast.makeText(this, "Error to fetch the data", Toast.LENGTH_SHORT).show()
         }

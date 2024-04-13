@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.adminjob.adminjobapp.models.Company
 import com.adminjob.adminjobapp.R
 
-class CompanyAdapter(private val companyList: List<Company>) :
-    RecyclerView.Adapter<CompanyAdapter.CompanyViewHolder>() {
+class CompanyAdapter(
+    private val companyList: List<Company>,
+    private val onViewJobsClicked: (Company) -> Unit
+) : RecyclerView.Adapter<CompanyAdapter.CompanyViewHolder>() {
 
     class CompanyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var companyName: TextView = itemView.findViewById(R.id.company_nameTV)
@@ -26,6 +28,11 @@ class CompanyAdapter(private val companyList: List<Company>) :
         val currentItem = companyList[position]
         holder.companyName.text = currentItem.name
         holder.companyDescription.text = currentItem.description
+
+        // Set click listener for the "View Jobs" button
+        holder.itemView.findViewById<TextView>(R.id.view_jobs_button).setOnClickListener {
+            onViewJobsClicked(currentItem)
+        }
     }
 
     override fun getItemCount() = companyList.size
