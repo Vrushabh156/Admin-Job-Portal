@@ -18,5 +18,10 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, CompanyActivity::class.java)
             startActivity(intent)
         }
+
+        binding.cardView3.setOnClickListener {
+            val intent = Intent(this@MainActivity, ProfileActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
