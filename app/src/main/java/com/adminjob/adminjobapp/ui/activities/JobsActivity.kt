@@ -29,7 +29,7 @@ class JobsActivity : AppCompatActivity() {
     }
 
     private fun fetchJobs() {
-        db.collection("jobs").get().addOnSuccessListener { result ->
+        db.collection("Jobinformation").get().addOnSuccessListener { result ->
             val jobsList = mutableListOf<Job>()
             for (document in result) {
                 val job = document.toObject(Job::class.java)

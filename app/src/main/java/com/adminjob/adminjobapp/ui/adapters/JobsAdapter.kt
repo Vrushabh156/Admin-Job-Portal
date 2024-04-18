@@ -19,9 +19,10 @@ class JobsAdapter(private val jobsList: List<Job>) :
     override fun onBindViewHolder(holder: JobViewHolder, positions: Int) {
         with(holder) {
             with(jobsList[positions]) {
-                binding.jobNameTV.text = name
-                binding.startDate.text = startDate
-                binding.positionTxt.text = position
+                binding.jobNameTV.text = Company
+                binding.startDate.text = Position
+                binding.positionTxt.text = Salary
+                binding.lastDate11.text = LastDate
             }
         }
     }

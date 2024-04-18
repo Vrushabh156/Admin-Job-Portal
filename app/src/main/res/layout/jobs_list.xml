@@ -17,7 +17,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:text="Job Name:"
+            android:text="Company Name:"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
-            android:text="Published on:"
+            android:text="Position:"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -43,12 +43,25 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
-            android:text="Position:"
+            android:text="Salary:"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/company_description" />
+
+        <TextView
+            android:id="@+id/lastDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:text="Last Date:"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/position" />
 
         <TextView
             android:id="@+id/edit_button"
@@ -62,7 +75,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/position" />
+            app:layout_constraintTop_toBottomOf="@id/lastDate" />
 
         <TextView
             android:id="@+id/view_jobs_button"
@@ -75,7 +88,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/position"
+            app:layout_constraintTop_toBottomOf="@id/lastDate11"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
@@ -83,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
-            android:text="Java Developer"
+            android:text="Google"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/job_name"
             app:layout_constraintEnd_toEndOf="parent"
@@ -97,7 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
-            android:text="2024/04/23"
+            android:text="Java Dev"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/company_description"
             app:layout_constraintEnd_toEndOf="parent"
@@ -110,13 +123,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
-            android:text="Java Developer"
+            android:text="50000"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/position"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@id/position"
             app:layout_constraintTop_toTopOf="@id/position" />
+
+        <TextView
+            android:id="@+id/lastDate11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="2024/04/23"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/lastDate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@id/lastDate"
+            app:layout_constraintTop_toTopOf="@id/lastDate" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
