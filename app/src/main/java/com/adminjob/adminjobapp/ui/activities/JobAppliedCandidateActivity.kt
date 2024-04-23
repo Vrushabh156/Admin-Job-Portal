@@ -7,6 +7,8 @@ import com.adminjob.adminjobapp.databinding.ActivityJobAppliedCandidateBinding
 import com.adminjob.adminjobapp.models.CandidateDetails
 import com.adminjob.adminjobapp.ui.adapters.CandidateAdapter
 import com.google.firebase.database.*
+import android.app.AlertDialog
+import android.widget.Toast
 
 class JobAppliedCandidateActivity : AppCompatActivity() {
 
@@ -31,12 +33,46 @@ class JobAppliedCandidateActivity : AppCompatActivity() {
                     job?.let { jobs.add(it) }
                 }
                 binding.rvJobs.layoutManager = LinearLayoutManager(this@JobAppliedCandidateActivity)
-                binding.rvJobs.adapter = CandidateAdapter(jobs)
+                binding.rvJobs.adapter = CandidateAdapter(jobs,
+                    onAccept = { candidate ->
+                        // Handle accept action, show accept dialog
+                        showAcceptDialog(candidate)
+                    },
+                    onReject = { candidate ->
+                        // Handle reject action, show reject dialog
+                        showRejectDialog(candidate)
+                    })
             }
 
             override fun onCancelled(error: DatabaseError) {
                 // Handle error
             }
         })
+    }
+
+    private fun showAcceptDialog(candidate: CandidateDetails) {
+        AlertDialog.Builder(this)
+            .setTitle("Accept Candidate")
+            .setMessage("Are you sure you want to accept ${candidate.fullName}?")
+            .setPositiveButton("Accept") { dialog, which ->
+                // Handle the acceptance action here
+                // For example, update the candidate status in the database
+                Toast.makeText(this, "${candidate.fullName} accepted", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun showRejectDialog(candidate: CandidateDetails) {
+        AlertDialog.Builder(this)
+            .setTitle("Reject Candidate")
+            .setMessage("Are you sure you want to reject ${candidate.fullName}?")
+            .setPositiveButton("Reject") { dialog, which ->
+                // Handle the rejection action here
+                // For example, update the candidate status in the database or notify the candidate
+                Toast.makeText(this, "${candidate.fullName} rejected", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 }
