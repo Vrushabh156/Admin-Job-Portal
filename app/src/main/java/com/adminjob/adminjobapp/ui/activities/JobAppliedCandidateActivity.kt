@@ -55,9 +55,16 @@ class JobAppliedCandidateActivity : AppCompatActivity() {
             .setTitle("Accept Candidate")
             .setMessage("Are you sure you want to accept ${candidate.fullName}?")
             .setPositiveButton("Accept") { dialog, which ->
-                // Handle the acceptance action here
-                // For example, update the candidate status in the database
-                Toast.makeText(this, "${candidate.fullName} accepted", Toast.LENGTH_SHORT).show()
+                // Update the candidate status in the database to "Accepted"
+                candidate.jobId.takeIf { it.isNotEmpty() }?.let { jobId ->
+                    database.child(jobId).child("applicationReviewStatus").setValue("Accepted")
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "${candidate.fullName} accepted", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(this, "Failed to update status for ${candidate.fullName}", Toast.LENGTH_SHORT).show()
+                        }
+                }
             }
             .setNegativeButton("Cancel", null)
             .show()
@@ -68,9 +75,16 @@ class JobAppliedCandidateActivity : AppCompatActivity() {
             .setTitle("Reject Candidate")
             .setMessage("Are you sure you want to reject ${candidate.fullName}?")
             .setPositiveButton("Reject") { dialog, which ->
-                // Handle the rejection action here
-                // For example, update the candidate status in the database or notify the candidate
-                Toast.makeText(this, "${candidate.fullName} rejected", Toast.LENGTH_SHORT).show()
+                // Update the candidate status in the database to "Rejected"
+                candidate.jobId.takeIf { it.isNotEmpty() }?.let { jobId ->
+                    database.child(jobId).child("applicationReviewStatus").setValue("Rejected")
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "${candidate.fullName} rejected", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(this, "Failed to update status for ${candidate.fullName}", Toast.LENGTH_SHORT).show()
+                        }
+                }
             }
             .setNegativeButton("Cancel", null)
             .show()
