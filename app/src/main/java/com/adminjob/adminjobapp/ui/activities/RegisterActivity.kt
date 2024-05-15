@@ -25,6 +25,12 @@ class RegisterActivity : AppCompatActivity() {
 
         binding.btnSubmit.setOnClickListener { registerUser() }
 
+        binding.signIn.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
     }
 
     override fun onStart() {

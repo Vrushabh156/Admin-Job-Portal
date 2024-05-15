@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.cardView1.setOnClickListener {
-            val intent = Intent(this@MainActivity, CompanyActivity::class.java)
+            val intent = Intent(this@MainActivity, JobsActivity::class.java)
             startActivity(intent)
         }
 
