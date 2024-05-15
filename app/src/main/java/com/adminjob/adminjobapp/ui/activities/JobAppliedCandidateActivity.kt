@@ -9,6 +9,7 @@ import com.adminjob.adminjobapp.ui.adapters.CandidateAdapter
 import com.google.firebase.database.*
 import android.app.AlertDialog
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 
 class JobAppliedCandidateActivity : AppCompatActivity() {
 
@@ -20,8 +21,17 @@ class JobAppliedCandidateActivity : AppCompatActivity() {
         binding = ActivityJobAppliedCandidateBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        database = FirebaseDatabase.getInstance().getReference("applications")
-        fetchJobs()
+        // Get the current user's ID
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+        if (userId != null) {
+            database = FirebaseDatabase.getInstance().getReference("users").child(userId).child("applications")
+            fetchJobs()
+        }
+
+////        database = FirebaseDatabase.getInstance().getReference("applications")
+//        database = FirebaseDatabase.getInstance().getReference("users").child(userId).child("applications")
+//        fetchJobs()
     }
 
     private fun fetchJobs() {
@@ -57,7 +67,7 @@ class JobAppliedCandidateActivity : AppCompatActivity() {
             .setPositiveButton("Accept") { dialog, which ->
                 // Update the candidate status in the database to "Accepted"
                 candidate.jobId.takeIf { it.isNotEmpty() }?.let { jobId ->
-                    database.child(jobId).child("applicationReviewStatus").setValue("Accepted")
+                    database.child(jobId).child("Message").setValue("Accepted")
                         .addOnSuccessListener {
                             Toast.makeText(this, "${candidate.fullName} accepted", Toast.LENGTH_SHORT).show()
                         }
@@ -77,7 +87,7 @@ class JobAppliedCandidateActivity : AppCompatActivity() {
             .setPositiveButton("Reject") { dialog, which ->
                 // Update the candidate status in the database to "Rejected"
                 candidate.jobId.takeIf { it.isNotEmpty() }?.let { jobId ->
-                    database.child(jobId).child("applicationReviewStatus").setValue("Rejected")
+                    database.child(jobId).child("Message").setValue("Rejected")
                         .addOnSuccessListener {
                             Toast.makeText(this, "${candidate.fullName} rejected", Toast.LENGTH_SHORT).show()
                         }

@@ -4,7 +4,7 @@ data class CandidateDetails(
     var company: String = "",
     var fullName: String = "",
     var jobId: String = "",
-    var applicationReviewStatus: String = "",
+    var Message: String = "",
     var phoneNumber: String = "",
     var experience: String = "",
     var position: String = "",
