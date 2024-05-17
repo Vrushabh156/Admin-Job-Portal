@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.adminjob.adminjobapp.databinding.ActivityPostJobBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.collections.hashMapOf as hashMapOf1
 
@@ -13,6 +14,7 @@ class PostJobActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPostJobBinding
     private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,19 +29,12 @@ class PostJobActivity : AppCompatActivity() {
     private fun saveJobToFirestore() {
         val jobCompany = binding.etFirstName.text.toString().trim()
         val jobPosition = binding.etLastName.text.toString().trim()
-        val jobSalary =
-            binding.etEmail.text.toString().trim()
-        val jobLastDate =
-            binding.etContact.text.toString().trim()
-
-        val jobExperience = binding.etPassword.text.toString()
-            .trim()
-        val jobVacancy = binding.etSummary.text.toString()
-            .trim()
-        val jobId = binding.etPosition.text.toString()
-            .trim()
-        val jobQualification = binding.etVacancy.text.toString()
-            .trim()
+        val jobSalary = binding.etEmail.text.toString().trim()
+        val jobLastDate = binding.etContact.text.toString().trim()
+        val jobExperience = binding.etPassword.text.toString().trim()
+        val jobVacancy = binding.etSummary.text.toString().trim()
+        val jobId = binding.etPosition.text.toString().trim()
+        val jobQualification = binding.etVacancy.text.toString().trim()
         val skill = binding.etPlatform.text.toString().trim()
         val jobDescription = binding.etMinExp.text.toString().trim()
         val jobPostBy = binding.etMaxExp.text.toString().trim()
@@ -70,15 +65,24 @@ class PostJobActivity : AppCompatActivity() {
             "Email" to email
         )
 
-        // Add the job to the "jobs" collection in Firestore
-        db.collection("Jobinformation")
-            .add(job)
-            .addOnSuccessListener {
-                showSuccessDialog()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error adding job: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
+        // Get the current user ID
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val userId = currentUser.uid
+
+            // Add the job under the user's document in the "users" collection
+            db.collection("users").document(userId).collection("Jobinformation")
+                .add(job)
+                .addOnSuccessListener {
+                    showSuccessDialog()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error adding job: ${e.message}", Toast.LENGTH_SHORT)
+                        .show()
+                }
+        } else {
+            Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun showSuccessDialog() {

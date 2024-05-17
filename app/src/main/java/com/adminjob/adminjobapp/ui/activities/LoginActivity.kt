@@ -19,13 +19,15 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        val emailEditText = binding.editTextEmail
-        val passwordEditText = binding.editTextPassword
-        val signInButton = binding.buttonSignIn
+        binding.signUp.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
-        signInButton.setOnClickListener {
-            val email = emailEditText.text.toString().trim()
-            val password = passwordEditText.text.toString().trim()
+        binding.buttonSignIn.setOnClickListener {
+            val email = binding.editTextEmail.text.toString().trim()
+            val password = binding.editTextPassword.text.toString().trim()
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 signInUser(email, password)
@@ -56,18 +58,15 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
                     Toast.makeText(
-                        baseContext, "Authentication successful.",
+                        this, "Authentication successful.",
                         Toast.LENGTH_SHORT
                     ).show()
-                    // Navigate to next activity or update UI
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    startActivity(intent)
+                    navigateToMainActivity()
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(
-                        baseContext, "Authentication failed: ${task.exception?.message}",
+                        this, "Authentication failed: ${task.exception?.message}",
                         Toast.LENGTH_SHORT
                     ).show()
                 }

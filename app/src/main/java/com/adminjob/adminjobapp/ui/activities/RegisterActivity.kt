@@ -2,19 +2,15 @@ package com.adminjob.adminjobapp.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.adminjob.adminjobapp.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-
 class RegisterActivity : AppCompatActivity() {
 
-
     private lateinit var binding: ActivityRegisterBinding
-
     private val auth by lazy { FirebaseAuth.getInstance() }
     private val fireStore by lazy { FirebaseFirestore.getInstance() }
 
@@ -30,7 +26,6 @@ class RegisterActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
     }
 
     override fun onStart() {
@@ -73,9 +68,9 @@ class RegisterActivity : AppCompatActivity() {
                     ).show()
 
                     // Call saveUserData function to save user data to Firestore
-                    saveUserData(firstName, lastName, email, contact, summary)
-
-                    // You can also intent to another activity here
+                    user?.let {
+                        saveUserData(it.uid, firstName, lastName, email, contact, summary)
+                    }
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(
@@ -87,13 +82,13 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun saveUserData(
+        userId: String,
         firstName: String,
         lastName: String,
         email: String,
         contact: String,
         summary: String
     ) {
-        val db = FirebaseFirestore.getInstance() // Get instance of Firestore
         val user = hashMapOf(
             "firstName" to firstName,
             "lastName" to lastName,
@@ -102,10 +97,10 @@ class RegisterActivity : AppCompatActivity() {
             "summary" to summary
         )
 
-        // Add a new document with a generated ID
-        db.collection("users")
-            .add(user)
-            .addOnSuccessListener { documentReference ->
+        // Add a new document with the user's UID
+        fireStore.collection("users").document(userId)
+            .set(user)
+            .addOnSuccessListener {
                 Toast.makeText(
                     this@RegisterActivity,
                     "User data saved successfully",
@@ -113,6 +108,7 @@ class RegisterActivity : AppCompatActivity() {
                 ).show()
                 val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                 startActivity(intent)
+                finish() // Finish the current activity
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Error saving user data: ${e.message}", Toast.LENGTH_LONG)
