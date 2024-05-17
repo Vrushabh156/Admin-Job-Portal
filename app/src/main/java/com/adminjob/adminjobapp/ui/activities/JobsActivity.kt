@@ -25,7 +25,6 @@ class JobsActivity : AppCompatActivity() {
         binding.fabAdd.setOnClickListener {
             val intent = Intent(this@JobsActivity, PostJobActivity::class.java)
             startActivity(intent)
-            finish()
         }
 
         fetchJobs()
