@@ -71,7 +71,7 @@ class PostJobActivity : AppCompatActivity() {
             val userId = currentUser.uid
 
             // Add the job under the user's document in the "users" collection
-            db.collection("users").document(userId).collection("Jobinformation")
+            db.collection("Jobinformation")
                 .add(job)
                 .addOnSuccessListener {
                     showSuccessDialog()

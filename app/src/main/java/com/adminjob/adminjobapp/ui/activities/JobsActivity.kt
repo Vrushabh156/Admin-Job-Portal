@@ -34,7 +34,8 @@ class JobsActivity : AppCompatActivity() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             val userId = currentUser.uid
-            db.collection("users").document(userId).collection("Jobinformation").get()
+//            db.collection("users").document(userId).collection("Jobinformation").get()
+            db.collection("Jobinformation").get()
                 .addOnSuccessListener { result ->
                     val jobsList = mutableListOf<Job>()
                     for (document in result) {

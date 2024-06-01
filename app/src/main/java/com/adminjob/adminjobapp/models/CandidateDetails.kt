@@ -3,7 +3,7 @@ package com.adminjob.adminjobapp.models
 data class CandidateDetails(
     var company: String = "",
     var fullName: String = "",
-    var jobId: String = "",
+    var CompanyjobId: String = "",
     var Message: String = "",
     var phoneNumber: String = "",
     var experience: String = "",

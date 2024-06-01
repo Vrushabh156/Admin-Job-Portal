@@ -1,63 +1,53 @@
 package com.adminjob.adminjobapp.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.adminjob.adminjobapp.databinding.ActivityJobAppliedCandidateBinding
 import com.adminjob.adminjobapp.models.CandidateDetails
 import com.adminjob.adminjobapp.ui.adapters.CandidateAdapter
-import com.google.firebase.database.*
-import android.app.AlertDialog
-import android.widget.Toast
-import com.google.firebase.auth.FirebaseAuth
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.FirebaseFirestore
+
 
 class JobAppliedCandidateActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityJobAppliedCandidateBinding
-    private lateinit var database: DatabaseReference
+    private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityJobAppliedCandidateBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Get the current user's ID
-        val userId = FirebaseAuth.getInstance().currentUser?.uid
-
-        if (userId != null) {
-            database = FirebaseDatabase.getInstance().getReference("users").child(userId).child("applications")
-            fetchJobs()
-        }
-
-////        database = FirebaseDatabase.getInstance().getReference("applications")
-//        database = FirebaseDatabase.getInstance().getReference("users").child(userId).child("applications")
-//        fetchJobs()
+        firestore = FirebaseFirestore.getInstance()
+        fetchJobs()
     }
 
     private fun fetchJobs() {
-        database.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val jobs = mutableListOf<CandidateDetails>()
-                snapshot.children.forEach {
-                    val job = it.getValue(CandidateDetails::class.java)
-                    job?.let { jobs.add(it) }
-                }
-                binding.rvJobs.layoutManager = LinearLayoutManager(this@JobAppliedCandidateActivity)
-                binding.rvJobs.adapter = CandidateAdapter(jobs,
-                    onAccept = { candidate ->
-                        // Handle accept action, show accept dialog
-                        showAcceptDialog(candidate)
-                    },
-                    onReject = { candidate ->
-                        // Handle reject action, show reject dialog
-                        showRejectDialog(candidate)
-                    })
+        firestore.collection("job_applications").addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                // Handle error
+                return@addSnapshotListener
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                // Handle error
+            val jobs = mutableListOf<CandidateDetails>()
+            snapshot?.documents?.forEach {
+                val job = it.toObject(CandidateDetails::class.java)
+                job?.let { jobs.add(it) }
             }
-        })
+            binding.rvJobs.layoutManager = LinearLayoutManager(this@JobAppliedCandidateActivity)
+            binding.rvJobs.adapter = CandidateAdapter(jobs,
+                onAccept = { candidate ->
+                    // Handle accept action, show accept dialog
+                    showAcceptDialog(candidate)
+                },
+                onReject = { candidate ->
+                    // Handle reject action, show reject dialog
+                    showRejectDialog(candidate)
+                })
+        }
     }
 
     private fun showAcceptDialog(candidate: CandidateDetails) {
@@ -65,15 +55,30 @@ class JobAppliedCandidateActivity : AppCompatActivity() {
             .setTitle("Accept Candidate")
             .setMessage("Are you sure you want to accept ${candidate.fullName}?")
             .setPositiveButton("Accept") { dialog, which ->
-                // Update the candidate status in the database to "Accepted"
-                candidate.jobId.takeIf { it.isNotEmpty() }?.let { jobId ->
-                    database.child(jobId).child("Message").setValue("Accepted")
+                // Ensure jobId is not null or empty
+                candidate.CompanyjobId.takeIf { it.isNotEmpty() }?.let { CompanyjobId ->
+                    firestore.collection("job_applications").document(CompanyjobId)
+                        .update("Message", "Accepted") // Assuming the field to update is named "status"
                         .addOnSuccessListener {
-                            Toast.makeText(this, "${candidate.fullName} accepted", Toast.LENGTH_SHORT).show()
+                            Snackbar.make(
+                                binding.root,
+                                "${candidate.fullName} accepted",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
                         }
-                        .addOnFailureListener {
-                            Toast.makeText(this, "Failed to update status for ${candidate.fullName}", Toast.LENGTH_SHORT).show()
+                        .addOnFailureListener { e ->
+                            Snackbar.make(
+                                binding.root,
+                                "Failed to update status for ${candidate.fullName}: ${e.message}",
+                                Snackbar.LENGTH_LONG
+                            ).show()
                         }
+                } ?: run {
+                    Snackbar.make(
+                        binding.root,
+                        "Job ID is missing for ${candidate.fullName}",
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
             }
             .setNegativeButton("Cancel", null)
@@ -85,18 +90,43 @@ class JobAppliedCandidateActivity : AppCompatActivity() {
             .setTitle("Reject Candidate")
             .setMessage("Are you sure you want to reject ${candidate.fullName}?")
             .setPositiveButton("Reject") { dialog, which ->
-                // Update the candidate status in the database to "Rejected"
-                candidate.jobId.takeIf { it.isNotEmpty() }?.let { jobId ->
-                    database.child(jobId).child("Message").setValue("Rejected")
+                candidate.CompanyjobId.takeIf { it.isNotEmpty() }?.let { CompanyjobId ->
+                    firestore.collection("job_applications").document(CompanyjobId)
+                        .update("Message", "Rejected") // Assuming the field to update is named "status"
                         .addOnSuccessListener {
-                            Toast.makeText(this, "${candidate.fullName} rejected", Toast.LENGTH_SHORT).show()
+                            Snackbar.make(
+                                binding.root,
+                                "${candidate.fullName} rejected",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
                         }
-                        .addOnFailureListener {
-                            Toast.makeText(this, "Failed to update status for ${candidate.fullName}", Toast.LENGTH_SHORT).show()
+                        .addOnFailureListener { e ->
+                            Snackbar.make(
+                                binding.root,
+                                "Failed to update status for ${candidate.fullName}: ${e.message}",
+                                Snackbar.LENGTH_LONG
+                            ).show()
                         }
+                } ?: run {
+                    Snackbar.make(
+                        binding.root,
+                        "Job ID is missing for ${candidate.fullName}",
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
             }
             .setNegativeButton("Cancel", null)
             .show()
     }
+
+//    private fun sendEmail(recipient: String, subject: String, body: String) {
+//        // Use Kotlin Coroutines for network call on a background thread
+//        CoroutineScope(Dispatchers.IO).launch {
+//            try {
+//                MailUtil.sendEmail(recipient, subject, body)
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//            }
+//        }
+//    }
 }
