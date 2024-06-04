@@ -33,9 +33,12 @@ class JobAppliedCandidateActivity : AppCompatActivity() {
             }
 
             val jobs = mutableListOf<CandidateDetails>()
-            snapshot?.documents?.forEach {
-                val job = it.toObject(CandidateDetails::class.java)
-                job?.let { jobs.add(it) }
+            snapshot?.documents?.forEach { document ->
+                val job = document.toObject(CandidateDetails::class.java)
+                job?.let {
+                    it.uid = document.id // Set the unique ID from the document ID
+                    jobs.add(it)
+                }
             }
             binding.rvJobs.layoutManager = LinearLayoutManager(this@JobAppliedCandidateActivity)
             binding.rvJobs.adapter = CandidateAdapter(jobs,
@@ -56,8 +59,8 @@ class JobAppliedCandidateActivity : AppCompatActivity() {
             .setMessage("Are you sure you want to accept ${candidate.fullName}?")
             .setPositiveButton("Accept") { dialog, which ->
                 // Ensure jobId is not null or empty
-                candidate.CompanyjobId.takeIf { it.isNotEmpty() }?.let { CompanyjobId ->
-                    firestore.collection("job_applications").document(CompanyjobId)
+                candidate.uid.takeIf { it.isNotEmpty() }?.let { uid ->
+                    firestore.collection("job_applications").document(uid)
                         .update("Message", "Accepted") // Assuming the field to update is named "status"
                         .addOnSuccessListener {
                             Snackbar.make(
@@ -90,8 +93,8 @@ class JobAppliedCandidateActivity : AppCompatActivity() {
             .setTitle("Reject Candidate")
             .setMessage("Are you sure you want to reject ${candidate.fullName}?")
             .setPositiveButton("Reject") { dialog, which ->
-                candidate.CompanyjobId.takeIf { it.isNotEmpty() }?.let { CompanyjobId ->
-                    firestore.collection("job_applications").document(CompanyjobId)
+                candidate.uid.takeIf { it.isNotEmpty() }?.let { uid ->
+                    firestore.collection("job_applications").document(uid)
                         .update("Message", "Rejected") // Assuming the field to update is named "status"
                         .addOnSuccessListener {
                             Snackbar.make(
@@ -130,3 +133,5 @@ class JobAppliedCandidateActivity : AppCompatActivity() {
 //        }
 //    }
 }
+
+

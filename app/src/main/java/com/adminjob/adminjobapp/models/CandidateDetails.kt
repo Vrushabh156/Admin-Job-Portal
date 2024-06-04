@@ -1,6 +1,7 @@
 package com.adminjob.adminjobapp.models
 
 data class CandidateDetails(
+    var uid: String= "",
     var company: String = "",
     var fullName: String = "",
     var CompanyjobId: String = "",
